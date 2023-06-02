@@ -11,6 +11,7 @@
 <link href='https://ubukawa.github.io/cmv-test/watergis/maplibre-gl-legend@1.2.8/maplibre-gl-legend.css' rel='stylesheet' />
 <script src='https://ubukawa.github.io/cmv-test/watergis/maplibre-gl-legend@1.2.8/maplibre-gl-legend.js'></script>
   
+  
 <style>
 body { margin:0; padding:0; }
 #map {
@@ -74,8 +75,35 @@ var map = new maplibregl.Map({
 });
 
 map.on('load', function(){
-//凡例のプラグイン
-    const legend_target = { 
+/*  map.addSource('nemuro',{
+    type: 'geojson',
+    data: './geojson/nemuro.geojson'
+  });
+  map.addLayer({
+    'minzoom':10, 
+    'maxzoom':21,
+    'id':'nemuro',
+    'type':'line',
+    'source':'nemuro',
+    'paint':{
+//      'line-color':'#0000FF',
+      'line-color':[
+        'match',
+        ['get','精度区分'],
+        ['甲一','甲二'],
+        '#0000FF',
+        ['甲三','乙一'],
+        '#00FF00',
+        ['乙二','乙三'],
+        '#00FFFF',
+        '#FF00FF'
+      ],
+      'line-width': 0.7
+    }
+  })*/
+  //legend
+  const legend_target = {
+//    'nemuro': '登記所備付地図データ 根室市',
     'relief': '標高',
   };
   map.addControl(new MaplibreLegendControl(legend_target, {
@@ -86,7 +114,7 @@ map.on('load', function(){
 })
   
 //UI
-map.addControl(new maplibregl.AttributionControl({customAttribution: "<br />MapLibre GL JSとwatergisのプラグインを使っています。" }));
+//map.addControl(new maplibregl.AttributionControl({customAttribution: "<br />MapLibre GL JSとwatergisのプラグインを使っています。" }));
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 map.addControl(new maplibregl.ScaleControl() );
 
@@ -104,9 +132,11 @@ map.addControl(new MaplibreExportControl({
 
 
 //debug
+//map.showTileBoundaries = true;
 map.showTileBoundaries = false;
 map.showCollisionBoxes = false;
 
 </script>
+ 
 </body>
 </html>
