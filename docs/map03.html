@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>Test- 標高地図03-popup </title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://unpkg.com/maplibre-gl@3.0.1/dist/maplibre-gl.js'></script>
+<link href='https://unpkg.com/maplibre-gl@3.0.1/dist/maplibre-gl.css' rel='stylesheet' />
+<link href='https://ubukawa.github.io/cmv-test/watergis/maplibre-gl-export@1.3.8/maplibre-gl-export.css' rel='stylesheet' />
+<script src='https://ubukawa.github.io/cmv-test/watergis/maplibre-gl-export@1.3.8/maplibre-gl-export.js'></script>
+<link href='https://ubukawa.github.io/cmv-test/watergis/maplibre-gl-legend@1.2.8/maplibre-gl-legend.css' rel='stylesheet' />
+<script src='https://ubukawa.github.io/cmv-test/watergis/maplibre-gl-legend@1.2.8/maplibre-gl-legend.js'></script>
+  
+<style>
+body { margin:0; padding:0; }
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+p.cod1 { font-style:normal; font-size: 9pt; }
+</style>
+</head>
+<body onload="popupFunction()">
+    <style>
+        .maplibregl-popup{
+            max-width: 300px;
+        }
+    </style>
+ 
+<div id='map'></div>
+
+<script>
+function popupFunction() {
+   alert("Test")
+}
+
+var map = new maplibregl.Map({
+  container: 'map', 
+  attributionControl: false, //あとでaddControlの中で指定する
+  hash: true, 
+  //style: 'https://gsi-cyberjapan.github.io/optimal_bvmap/style/std.json', // スタイルファイルを外部ファイルで与える場合の例
+  style: {
+    version: 8,
+    sources: {
+        std: {
+            type: 'raster',
+            tiles: ['https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png'],
+            attribution: '国土地理院-地理院タイル（標準地図）',
+            maxzoom: 18,
+            minzoom: 5
+        },
+        relief: {
+            type: 'raster',
+            tiles: ['https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png'],
+            attribution: '国土地理院-段彩陰影図（海域部は海上保安庁海洋情報部の資料を使用して作成）',
+            maxzoom: 15,
+            minzoom: 5
+        }
+    },
+    layers:[
+        {
+            id: 'basemap',
+            type: 'raster',
+            source: 'std'
+        },
+        {
+            id: 'relief',
+            type: 'raster',
+            source: 'relief'
+        },
+    ]
+  },
+  center: [139.7444, 35.7244], // 中心の経度緯度
+  zoom: 8, // 初期表示のズームレベル
+  maxPitch: 85, //最大の傾き
+  maxZoom: 4, // 最小ズーム
+  maxZoom: 18 // 最大ズーム
+});
+
+map.on('load', function(){
+    map.addSource('points',{
+        type: 'geojson',
+        data: {
+            'type': 'FeatureCollection',
+            'crs': {'type':'name','properties':{'name':'urn:ogc:def:crs:OGC:1.3:CRS84'}},
+            'features': [
+                {
+                    'type':'Feature', 
+                    'properties': {'p-type':'office','name':'職場','memo':'ABC町XYZ番地'},
+                    'geometry':{'type':'Point','coordinates':[139.747386,35.671165]}
+                },
+                {
+                    'type':'Feature', 
+                    'properties': {'p-type':'home','name':'自宅A（ダミー）','memo':'DEF町GHI番地'},
+                    'geometry':{'type':'Point','coordinates':[139.756809,35.673478]}}
+            ]
+        }
+    })
+    map.addLayer({
+        'id':'locations',
+        'type':'circle',
+        'source':'points',
+        'layout':{},
+        'paint':{
+            'circle-color': ['match',['get','p-type'],'office','#0000FF','home','#FF0000','#000000'],
+            'circle-radius': 10
+        }
+    })
+//凡例のプラグイン
+    const legend_target = { 
+        'locations':'職場(青)・自宅（赤）の位置',
+        'relief': '標高',
+  };
+  map.addControl(new MaplibreLegendControl(legend_target, {
+    showDefault: false,
+    onlyRendered: false,
+    reverseOrder: false
+  }), 'bottom-left');
+})
+
+//pop-up
+var popup = new maplibregl.Popup({
+    closeButton: false,
+    closeOnClick: false
+})
+
+map.on('mousemove','locations', function(e){
+    map.getCanvas().style.cursor = 'pointer';
+
+    if(e.features[0].properties.name){
+        var html = "p class='cod1'" + e.features[0].properties.name + "<br />" + e.features[0].properties.memo + "</p>"
+        popup
+        .setLngLat(e.lngLat)
+        .setHTML(html)
+        .addTo(map)
+    } else {
+        popup.remove();
+    }
+})
+
+map.on('mouseleave','locations', function(){
+    map.getCanvas().style.cursor='';
+    popup.remove();
+})
+
+
+
+//UI
+map.addControl(new maplibregl.AttributionControl({customAttribution: "<br />MapLibre GL JSとwatergisのプラグインを使っています。" }));
+map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+map.addControl(new maplibregl.ScaleControl() );
+
+//Export
+map.addControl(new MaplibreExportControl({
+  PageSize: Size.A4,
+  PageOrientation: PageOrientation.Portrait,
+  Format: Format.PNG,
+  DPI: DPI[96],
+  //Crosshair: true,
+  PrintableArea: true,
+  Local: 'en'
+}), 'top-right');
+
+
+
+//debug
+map.showTileBoundaries = false;
+map.showCollisionBoxes = false;
+
+</script>
+</body>
+</html>
