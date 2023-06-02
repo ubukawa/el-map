@@ -32,7 +32,7 @@ function popupFunction() {
 
 var map = new maplibregl.Map({
   container: 'map', 
-  attributionControl: true,
+  attributionControl: false, //あとでaddControlの中で指定する
   hash: true, 
   //style: 'https://gsi-cyberjapan.github.io/optimal_bvmap/style/std.json', // スタイルファイルを外部ファイルで与える場合の例
   style: {
