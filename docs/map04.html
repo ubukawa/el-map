@@ -128,11 +128,16 @@ map.on('load', function(){
         }
     })
     map.addSource('relief',{
-        'type': 'raster',
-        'tiles': ['https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png'],
-        'attribution': '国土地理院-段彩陰影図（海域部は海上保安庁海洋情報部の資料を使用して作成）',
-        'maxzoom': 15,
-        'minzoom': 5
+        type: 'raster',
+        tiles: ['https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png'],
+        attribution: '国土地理院-段彩陰影図（海域部は海上保安庁海洋情報部の資料を使用して作成）',
+        maxzoom: 15,
+        minzoom: 5
+    })
+    map.addLayer({
+        'id':'relief',
+            'source':'relief',
+            'type':'raster'
     })
     map.addLayer({
         'id':'locations',
@@ -143,13 +148,7 @@ map.on('load', function(){
             'circle-color': ['match',['get','p-type'],'office','#0000FF','home','#FF0000','#000000'],
             'circle-radius': 10
         }
-        },
-        {
-            'id':'relief',
-            'source':'relief',
-            'type':'raster'
-        }
-    )
+    })        
 //凡例のプラグイン
     const legend_target = { 
         'locations':'職場(青)・自宅（赤）の位置'
