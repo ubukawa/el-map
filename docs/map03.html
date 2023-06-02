@@ -130,7 +130,7 @@ map.on('mousemove','locations', function(e){
     map.getCanvas().style.cursor = 'pointer';
 
     if(e.features[0].properties.name){
-        var html = "p class='cod1'" + e.features[0].properties.name + "<br />" + e.features[0].properties.memo + "</p>"
+        var html = "<p class='cod1'>" + e.features[0].properties.name + "<br />" + e.features[0].properties.memo + "</p>"
         popup
         .setLngLat(e.lngLat)
         .setHTML(html)
