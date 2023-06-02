@@ -35,8 +35,7 @@ var map = new maplibregl.Map({
   container: 'map', 
   attributionControl: true,
   hash: true, 
-  //renderWorldCopies: false,
-  //style: 'https://gsi-cyberjapan.github.io/optimal_bvmap/style/std.json', // style file path
+  //style: 'https://gsi-cyberjapan.github.io/optimal_bvmap/style/std.json', // スタイルファイルを外部ファイルで与える場合の例
   style: {
     version: 8,
     sources: {
@@ -68,11 +67,11 @@ var map = new maplibregl.Map({
         },
     ]
   },
-  center: [145.58222, 43.3299], // center [lng, lat]
-  zoom: 8, // zoom level at loading
-  maxPitch: 85,
-  maxZoom: 4, // min zoom
-  maxZoom: 18 // max zoom
+  center: [139.7444, 35.7244], // 中心の経度緯度
+  zoom: 8, // 初期表示のズームレベル
+  maxPitch: 85, //最大の傾き
+  maxZoom: 4, // 最小ズーム
+  maxZoom: 18 // 最大ズーム
 });
 
 map.on('load', function(){
@@ -115,8 +114,7 @@ map.on('load', function(){
 })
   
 //UI
-//map.addControl(new maplibregl.AttributionControl({customAttribution: "GSI Map Vector." , compact: true}));
-//map.addControl(new maplibregl.AttributionControl({customAttribution: "<br />登記所備付地図データについては、精度区分が異なるデータが含まれることから、線色を変えて表現しています。<br />（青：甲一、甲二、緑：甲三、乙一、水色：乙二、乙三、ピンク：その他（null等））" }));
+//map.addControl(new maplibregl.AttributionControl({customAttribution: "<br />MapLibre GL JSとwatergisのプラグインを使っています。" }));
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 map.addControl(new maplibregl.ScaleControl() );
 
