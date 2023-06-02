@@ -80,8 +80,15 @@ map.on('load', function(){
             'type': 'FeatureCollection',
             'crs': {'type':'name','properties':{'name':'urn:ogc:def:crs:OGC:1.3:CRS84'}},
             'features': [
-                {'type':'Feature', 'properties': {'p-type':'office','name':'職場','memo':'ABC町XYZ番地'},'geometry':{'type':'Point','coordinates':[139.747386,35.671165]}},
-                {'type':'Feature', 'properties': {'p-type':'home','name':'自宅A（ダミー）','memo':'DEF町GHI番地'},'geometry':{'type':'Point','coordinates':[139.756809,35.673478]}}
+                {
+                    'type':'Feature', 
+                    'properties': {'p-type':'office','name':'職場','memo':'ABC町XYZ番地'},
+                    'geometry':{'type':'Point','coordinates':[139.747386,35.671165]}
+                },
+                {
+                    'type':'Feature', 
+                    'properties': {'p-type':'home','name':'自宅A（ダミー）','memo':'DEF町GHI番地'},
+                    'geometry':{'type':'Point','coordinates':[139.756809,35.673478]}}
             ]
         }
     })
@@ -91,21 +98,13 @@ map.on('load', function(){
         'source':'points',
         'layout':{},
         'paint':{
-            'circle-color': [
-                'match',
-                ['get','p-type'],
-                'office',
-                '#0000FF',
-                'home',
-                '#FF0000',
-                '#00FF00'
-            ],
+            'circle-color': ['match',['get','p-type'],'office','#0000FF','home','#FF0000','#000000'],
             'circle-radius': 10
         }
     })
 //凡例のプラグイン
     const legend_target = { 
-        'locations':'職場・自宅の位置',
+        'locations':'職場(青)・自宅（赤）の位置',
         'relief': '標高',
   };
   map.addControl(new MaplibreLegendControl(legend_target, {
