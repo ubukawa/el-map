@@ -88,13 +88,6 @@ var map = new maplibregl.Map({
             attribution: '国土地理院-地理院タイル（標準地図）',
             maxzoom: 18,
             minzoom: 5
-        },
-        relief: {
-            type: 'raster',
-            tiles: ['https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png'],
-            attribution: '国土地理院-段彩陰影図（海域部は海上保安庁海洋情報部の資料を使用して作成）',
-            maxzoom: 15,
-            minzoom: 5
         }
     },
     layers:[
@@ -102,12 +95,7 @@ var map = new maplibregl.Map({
             id: 'basemap',
             type: 'raster',
             source: 'std'
-        },
-        {
-            id: 'relief',
-            type: 'raster',
-            source: 'relief'
-        },
+        }
     ]
   },
   center: [139.7444, 35.7244], // 中心の経度緯度
@@ -139,6 +127,13 @@ map.on('load', function(){
             ]
         }
     })
+    map.addSource('relief',{
+        'type': 'raster',
+        'tiles': ['https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png'],
+        'attribution': '国土地理院-段彩陰影図（海域部は海上保安庁海洋情報部の資料を使用して作成）',
+        'maxzoom': 15,
+        'minzoom': 5
+    })
     map.addLayer({
         'id':'locations',
         'type':'circle',
@@ -147,6 +142,11 @@ map.on('load', function(){
         'paint':{
             'circle-color': ['match',['get','p-type'],'office','#0000FF','home','#FF0000','#000000'],
             'circle-radius': 10
+        },
+        {
+            'id':'relief',
+            'source':'relief',
+            'type':'raster'
         }
     })
 //凡例のプラグイン
