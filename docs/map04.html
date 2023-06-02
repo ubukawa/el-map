@@ -142,13 +142,14 @@ map.on('load', function(){
         'paint':{
             'circle-color': ['match',['get','p-type'],'office','#0000FF','home','#FF0000','#000000'],
             'circle-radius': 10
+        }
         },
         {
             'id':'relief',
             'source':'relief',
             'type':'raster'
         }
-    })
+    )
 //凡例のプラグイン
     const legend_target = { 
         'locations':'職場(青)・自宅（赤）の位置'
