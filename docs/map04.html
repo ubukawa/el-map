@@ -101,8 +101,8 @@ var map = new maplibregl.Map({
   maxZoom: 18 // 最大ズーム
 });
 
-const slider = document.getElementById('slider');
-const sliderValue = document.getElementById('slider-value');
+const slider = document.getElementById('slider')
+const sliderValue = document.getElementById('slider-value')
 
 map.on('load', function(){
     map.addSource('points',{
@@ -146,13 +146,15 @@ map.on('load', function(){
         }
     })
 
-    slider.addEventListener('input',(e) =>{
-    map.setPaintProperty,
+    slider.addEventListener('input',(e) => {
+    map.setPaintProperty(
     'relief',
     'raster-opacity',
     parseInt(e.target.value, 10) / 100
-  })
-  sliderValue.textContent = e.target.value + '%';    
+  )
+  sliderValue.textContent = e.target.value + '%';   
+})
+
 
 //凡例のプラグイン
     const legend_target = { 
