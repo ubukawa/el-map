@@ -101,6 +101,9 @@ var map = new maplibregl.Map({
   maxZoom: 18 // 最大ズーム
 });
 
+const slider = document.getElementById('slider');
+const sliderValue = document.getElementById('slider-value');
+
 map.on('load', function(){
     map.addSource('points',{
         type: 'geojson',
@@ -147,8 +150,7 @@ map.on('load', function(){
         'locations':'職場(青)・自宅（赤）の位置'
   };
 
-  const slider = document.getElementById('slider');
-  const sliderValue = document.getElementById('slider-value');
+
 
   slider.addEventListener('input',(e) =>{
     map.setPaintProperty,
