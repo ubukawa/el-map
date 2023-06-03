@@ -132,8 +132,8 @@ map.on('load', function(){
     })
     map.addLayer({
         'id':'relief',
-            'source':'relief',
-            'type':'raster'
+        'source':'relief',
+        'type':'raster'
     })
     map.addLayer({
         'id':'locations',
@@ -144,21 +144,20 @@ map.on('load', function(){
             'circle-color': ['match',['get','p-type'],'office','#0000FF','home','#FF0000','#000000'],
             'circle-radius': 10
         }
-    })        
-//凡例のプラグイン
-    const legend_target = { 
-        'locations':'職場(青)・自宅（赤）の位置'
-  };
+    })
 
-
-
-  slider.addEventListener('input',(e) =>{
+    slider.addEventListener('input',(e) =>{
     map.setPaintProperty,
     'relief',
     'raster-opacity',
     parseInt(e.target.value, 10) / 100
   })
-  sliderValue.textContent = e.target.value + '%';
+  sliderValue.textContent = e.target.value + '%';    
+
+//凡例のプラグイン
+    const legend_target = { 
+        'locations':'職場(青)・自宅（赤）の位置'
+  };
 
   map.addControl(new MaplibreLegendControl(legend_target, {
     showDefault: false,
